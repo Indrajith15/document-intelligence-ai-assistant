@@ -1,148 +1,135 @@
 # 📄 Document Intelligence AI Assistant
 
-An AI-powered document question-answering application that allows users to upload PDF documents and ask questions about their content. Built using **Retrieval-Augmented Generation (RAG)**, the application retrieves relevant information from uploaded documents and generates context-grounded answers using Google's Gemini models.
+A GenAI-powered document question-answering application built using **Retrieval-Augmented Generation (RAG)**. Upload PDF documents and ask questions to receive context-grounded answers using Google's Gemini models.
 
-## 🚀 Project Overview
+## 🚀 Features
 
-The Document Intelligence AI Assistant simplifies information extraction from PDF documents.
-
-Instead of manually searching through lengthy documents, users can upload a PDF and interact with its contents through a conversational interface.
-
-The application uses a RAG pipeline to retrieve relevant document chunks and generate answers based on the uploaded content, reducing unsupported responses.
-
-## ✨ Features
-
-- **PDF Upload:** Upload PDF documents through an interactive interface.
-- **Text Extraction:** Extract text from PDF documents using PyPDF.
-- **Document Chunking:** Split extracted text into smaller, manageable chunks using LangChain.
-- **Text Embeddings:** Generate vector embeddings using Google's Gemini Embedding model.
-- **Vector Storage:** Store document embeddings and metadata in ChromaDB.
-- **Semantic Search:** Retrieve relevant document chunks based on user questions.
-- **AI-Powered Responses:** Generate context-grounded answers using Gemini.
-- **Conversational Interface:** Interact with documents through a Streamlit chat interface.
-- **Input Validation:** Validate uploaded PDFs, file size, and user questions.
-- **Error Handling:** Handle backend connection failures and request timeouts.
+- PDF upload and text extraction using PyPDF.
+- Document chunking using LangChain.
+- Text embeddings using Gemini Embeddings.
+- Vector storage and semantic search using ChromaDB.
+- Context-grounded answers using Gemini 2.5 Flash.
+- Interactive chat interface using Streamlit.
+- FastAPI backend with input validation and error handling.
 
 ## 🛠️ Tech Stack
 
 | Component | Technology |
 |---|---|
-| Programming Language | Python |
+| Language | Python |
 | Frontend | Streamlit |
 | Backend | FastAPI |
-| LLM | Google Gemini 2.5 Flash |
+| LLM | Gemini 2.5 Flash |
 | Embeddings | Gemini Embedding 001 |
 | Vector Database | ChromaDB |
 | Document Processing | PyPDF |
-| Text Chunking | LangChain |
-| API Communication | REST API, HTTP, JSON |
-| Configuration | Python-dotenv |
+| Chunking | LangChain |
 
 ## 🏗️ Architecture
 
-The application follows a Retrieval-Augmented Generation (RAG) architecture.
-
-### Document Processing Pipeline
-
-1. User uploads a PDF through Streamlit.
-2. FastAPI receives the uploaded document.
-3. PyPDF extracts the document text.
-4. LangChain splits the text into smaller chunks.
-5. Gemini generates embeddings for each chunk.
-6. ChromaDB stores the embeddings and metadata.
-
-### Question Answering Pipeline
-
-1. User submits a question through the chat interface.
-2. Streamlit sends the question to the FastAPI backend.
-3. Gemini generates an embedding for the question.
-4. ChromaDB retrieves the most relevant document chunks.
-5. Retrieved context is passed to Gemini 2.5 Flash.
-6. Gemini generates an answer using the retrieved document content.
-7. The answer is displayed in the Streamlit interface.
-
-## 📂 Project Structure
-
-```text
-Document_Intelligence_AI/
-│
-├── backend/
-│   ├── __init__.py
-│   ├── main.py
-│   ├── routes.py
-│   ├── rag.py
-│   └── document_processor.py
-│
-├── frontend/
-│   └── app.py
-│
-├── data/
-│   └── uploads/
-│
-├── chroma_db/
-│
-├── .env
-├── .gitignore
-├── requirements.txt
-└── README.md
+```mermaid
+flowchart TD
+    A[User] --> B[Streamlit Frontend]
+    B --> C[FastAPI Backend]
+    C --> D[PDF Extraction - PyPDF]
+    D --> E[Chunking - LangChain]
+    E --> F[Gemini Embeddings]
+    F --> G[(ChromaDB)]
+    C --> H[Semantic Retrieval]
+    H --> G
+    G --> I[Gemini 2.5 Flash]
+    I --> B
 ```
 
-**Note:** The `.env`, `.venv`, and local ChromaDB data are excluded from GitHub.
+## 📸 Application Screenshots
 
-## ⚙️ Installation and Setup
+### Home & Document Upload
+![Home](screenshots/home.png)
 
-### 1. Clone the repository
+### Document Upload
+![Document Upload](screenshots/document-upload.png)
+
+### AI Chat Interface
+![Chat Interface](screenshots/chat-response.png)
+
+## ⚙️ Setup & Installation
+
+**1. Clone the repository**
 
 ```bash
 git clone https://github.com/Indrajith15/document-intelligence-ai-assistant.git
-
 cd document-intelligence-ai-assistant
 ```
 
-### 2. Create a virtual environment
+**2. Create and activate a virtual environment**
 
 ```bash
 python -m venv .venv
 ```
 
-Activate it on Windows:
+Windows:
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
 ```
 
-### 3. Install dependencies
+**3. Install dependencies**
 
 ```bash
 python -m pip install -r requirements.txt
 ```
 
-### 4. Configure environment variables
+**4. Configure your API key**
 
-Create a `.env` file in the project root.
-
-Add your Gemini API key:
+Create a `.env` file:
 
 ```env
 GEMINI_API_KEY=your_gemini_api_key
 ```
 
-Get an API key from [Google AI Studio](https://aistudio.google.com/apikey).
+Get your key from [Google AI Studio](https://aistudio.google.com/apikey).
 
-**Important:** Never commit your `.env` file or expose your API key publicly.
-
-## ▶️ Running the Application
-
-The application requires two terminals.
-
-### Terminal 1: Start the FastAPI backend
-
-From the project root:
+**5. Run the backend**
 
 ```bash
 python -m uvicorn backend.main:app --reload
 ```
 
-Backend URL:
+**6. Run the frontend in another terminal**
 
-```text
+```bash
+python -m streamlit run frontend/app.py
+```
+
+Frontend: `http://localhost:8501`
+
+API documentation: `http://127.0.0.1:8000/docs`
+
+## 🔌 API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/` | Welcome endpoint |
+| GET | `/health` | Health check |
+| POST | `/upload` | Upload and process PDFs |
+| POST | `/ask` | Ask document-related questions |
+
+## 🔮 Future Improvements
+
+- Multi-document support.
+- Source citations with page numbers.
+- User authentication.
+- Persistent cloud vector storage.
+- Cloud deployment.
+
+## 👨‍💻 Author
+
+**Indrajith Nair**
+
+Aspiring AI / Generative AI Engineer.
+
+[GitHub Profile](https://github.com/Indrajith15) · [Project Repository](https://github.com/Indrajith15/document-intelligence-ai-assistant)
+
+---
+
+*Built as a hands-on project exploring RAG, LLMs, embeddings and vector databases.*
